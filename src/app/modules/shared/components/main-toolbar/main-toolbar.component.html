@@ -61,7 +61,7 @@
 
     <section class="md:ml-4 w-fit" id="language-options">
       <div primary id="google_translate_element"></div>
-      
+
       <ion-icon name="language-outline" class="cursor-pointer text-2xl mt-1 md:mr-2" color="medium"></ion-icon>
     </section>
 
@@ -72,10 +72,13 @@
             SELECCIONAR
           </span>
 
-          <ion-radio-group (ngModelChange)="setLang($event)" [(ngModel)]="language">
+          <ion-radio-group [value]="language" (ionChange)="setLang($event)">
+
             <ion-item *ngFor="let lang of languages" lines="none" style="--padding-start: 0; --inner-padding-end: 0;">
+
               <ion-label class="ml-2">{{ lang.name }}</ion-label>
               <ion-radio slot="start" [value]="lang.code"></ion-radio>
+
             </ion-item>
           </ion-radio-group>
         </section>

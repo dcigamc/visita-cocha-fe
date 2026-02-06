@@ -22,15 +22,13 @@ export class MainToolbarComponent implements OnInit {
   public backState: boolean;
   public languages = [
     { name: 'Español', code: 'es' },
-    { name: 'English', code: 'en' },
-    { name: 'Français', code: 'fr' },
-    { name: 'Italiano', code: 'it' },
-    { name: 'Português', code: 'pt' }
+    { name: 'English', code: 'en' }
   ];
 
   public language: any = 'es';
 
   private _unsubscribe: Subject<void>;
+  private _isChangingLang = false;
 
   constructor(private menu: MenuController,
     public router: Router,
@@ -42,6 +40,7 @@ export class MainToolbarComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.initGoogleTranslate();
     this._initLang();
     this._stateDataListener();
   }
@@ -50,9 +49,9 @@ export class MainToolbarComponent implements OnInit {
     const savedLang = localStorage.getItem('lang');
     if (savedLang) {
       this.language = savedLang;
+    } else {
+      this.language = 'es';
     }
-
-    this.initGoogleTranslate();
 
     if (this.language !== 'es') {
       setTimeout(() => {
@@ -83,36 +82,42 @@ export class MainToolbarComponent implements OnInit {
     }
   }
 
-  setLang(event: any) {
-    const lang = event?.detail?.value || event?.value || event;
-
-    if (!lang || lang === this.language && localStorage.getItem('lang') === lang) {
+  setLang(lang: any) {
+    const activeLang = localStorage.getItem('lang_active');
+    if (this._isChangingLang || lang?.detail?.value === activeLang) {
       return;
     }
 
-    this.language = lang;
-    localStorage.setItem('lang', lang);
+    this._isChangingLang = true;
+    this.language = lang?.detail?.value;
+    localStorage.setItem('lang', this.language);
+    localStorage.setItem('lang_active', this.language);
 
-    if (lang === 'es') {
+    if (this.language === 'es') {
       this.resetToOriginalLanguage();
-      return;
+    } else {
+      this.applyLang(this.language);
     }
 
     setTimeout(() => {
-      this.applyLang(lang);
-    }, 300);
+      this._isChangingLang = false;
+    }, 1500);
   }
 
-  applyLang(lang: string) {
-    const select = document.querySelector('.goog-te-combo') as HTMLSelectElement;
+  applyLang(lang: string, attempts = 0) {
+    if (attempts > 5) return;
 
-    if (select) {
-      select.value = lang;
-      select.dispatchEvent(new Event('change'));
-    } else {
-      console.warn('Google Translate no detectado, reintentando...');
-      setTimeout(() => this.applyLang(lang), 1000);
+    const select = document.querySelector(
+      '.goog-te-combo'
+    ) as HTMLSelectElement;
+
+    if (!select || select.value === lang) {
+      setTimeout(() => this.applyLang(lang, attempts + 1), 500);
+      return;
     }
+
+    select.value = lang;
+    select.dispatchEvent(new Event('change'));
   }
 
   resetToOriginalLanguage() {
