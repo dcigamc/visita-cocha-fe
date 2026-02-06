@@ -1,84 +1,85 @@
 <ion-toolbar class="main-padding shadow-3">
   <!-- Left section -->
-  <ion-buttons *ngIf="backState"
-               slot="secondary"
-               class="fadeinup animation-duration-200 -ml-3">
+  <ion-buttons *ngIf="backState" slot="secondary" class="fadeinup animation-duration-200 -ml-3">
     <div fill="clear" (click)="location.back()" class="mx-1 flex cursor-pointer">
-      <ion-icon slot="start" name="chevron-back-outline" class="text-3xl" color="primary"></ion-icon>
+      <ion-icon slot="start" name="chevron-back-outline" class="text-3xl" color="tertiary"></ion-icon>
     </div>
   </ion-buttons>
 
-  <ion-buttons *ngIf="!backState"
-               slot="secondary"
-               class="fadeinup -ml-3 flex align-items-center">
+  <ion-buttons *ngIf="!backState" slot="secondary" class="fadeinup -ml-3 flex align-items-center">
     <div fill="clear" (click)="this.openSideBar('side-menu')" class="flex cursor-pointer">
-      <ion-icon slot="start" name="menu-outline" class="text-4xl ml-1" color="primary"></ion-icon>
+      <ion-icon slot="start" name="menu-outline" class="text-4xl ml-1" color="tertiary"></ion-icon>
     </div>
 
     <div class="hidden md:block h-2rem w-auto">
-      <img src="assets/images/logo/logo.svg"
-          alt="Logo"
-          class="h-full cursor-pointer"
-          routerLink='/'>
+      <img src="assets/images/logo/logo.webp" alt="Logo" class="h-full cursor-pointer" routerLink='/'>
     </div>
   </ion-buttons>
 
   <!-- Title center -->
-  <ion-title *ngIf="backState && this.router.url.includes('/map/view')"
-             class="fadeinup animation-duration-200">
+  <ion-title *ngIf="backState && this.router.url.includes('/map/view')" class="fadeinup animation-duration-200">
     <ion-text color="medium" class="font-normal">
       Mapa
     </ion-text>
   </ion-title>
 
-  <ion-title *ngIf="!this.router.url.includes('/map/view')"
-             class="md:hidden flex align-items-center">  
-    <img src="assets/images/logo/logo.svg"
-         alt="Logo"
-         class="h-2rem w-auto cursor-pointer"
-         routerLink='/'>
+  <ion-title *ngIf="!this.router.url.includes('/map/view')" class="md:hidden flex align-items-center">
+    <img src="assets/images/logo/logo.webp" alt="Logo" class="h-2rem w-auto cursor-pointer" routerLink='/'>
   </ion-title>
 
   <!-- Right section -->
-  <ion-buttons *ngIf="!backState"
-               slot="primary"
-               class="fadeinup -ml-2">
+  <ion-buttons *ngIf="!backState" slot="primary" class="fadeinup -ml-2">
     <section class="hidden md:flex w-fit gap-5">
-      <section routerLink='/'
-               [ngClass]="{'active-link-3': router.url === '/'}"
-               detail-icon="false"
-               class="flex align-items-center cursor-pointer gap-1">
+      <section routerLink='/' [ngClass]="{'active-link-3': router.url === '/'}" detail-icon="false"
+        class="flex align-items-center cursor-pointer gap-1">
         <ion-label color="medium">
           Inicio
         </ion-label>
       </section>
-    
-      <section routerLink="attractions"
-                [routerLinkActive]="'active-link-3'"
-                detail-icon="false"
-                class="flex align-items-center cursor-pointer gap-1">
+
+      <section routerLink="attractions" [routerLinkActive]="'active-link-3'" detail-icon="false"
+        class="flex align-items-center cursor-pointer gap-1">
         <ion-label color="medium">
           Turismo
         </ion-label>
       </section>
-    
-      <section routerLink="restaurants"
-                [routerLinkActive]="'active-link-3'"
-                detail-icon="false"
-                class="flex align-items-center cursor-pointer gap-1">
+
+      <section routerLink="restaurants" [routerLinkActive]="'active-link-3'" detail-icon="false"
+        class="flex align-items-center cursor-pointer gap-1">
         <ion-label color="medium">
           Gastronomía
         </ion-label>
       </section>
-    
-      <section routerLink="map/view"
-                [routerLinkActive]="'active-link-3'"
-                detail-icon="false"
-                class="flex align-items-center cursor-pointer gap-1">
+
+      <section routerLink="map/view" [routerLinkActive]="'active-link-3'" detail-icon="false"
+        class="flex align-items-center cursor-pointer gap-1">
         <ion-label color="medium">
           Mapa
         </ion-label>
       </section>
     </section>
+
+    <section class="md:ml-4 w-fit" id="language-options">
+      <div primary id="google_translate_element"></div>
+      
+      <ion-icon name="language-outline" class="cursor-pointer text-2xl mt-1 md:mr-2" color="medium"></ion-icon>
+    </section>
+
+    <ion-popover trigger="language-options">
+      <ng-template>
+        <section class="ion-padding flex flex-column gap-1">
+          <span class="white-space-nowrap text-xs font-medium">
+            SELECCIONAR
+          </span>
+
+          <ion-radio-group (ngModelChange)="setLang($event)" [(ngModel)]="language">
+            <ion-item *ngFor="let lang of languages" lines="none" style="--padding-start: 0; --inner-padding-end: 0;">
+              <ion-label class="ml-2">{{ lang.name }}</ion-label>
+              <ion-radio slot="start" [value]="lang.code"></ion-radio>
+            </ion-item>
+          </ion-radio-group>
+        </section>
+      </ng-template>
+    </ion-popover>
   </ion-buttons>
 </ion-toolbar>

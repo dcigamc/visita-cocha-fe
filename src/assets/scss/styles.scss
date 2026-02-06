@@ -44,7 +44,8 @@
         './vendors/leaflet/map.scss',
         './base/iframe.scss',
         './components/snow.scss',
-        './vendors/chatbase/chatbase';
+        './vendors/chatbase/chatbase',
+        './vendors/googleMaps/google-translate';
 
 * {
   padding: 0;
@@ -98,7 +99,7 @@
 .active-link {
   color: var(--ion-color-light) !important;
   --ion-color-base: none;
-  --background: rgba(var(--ion-color-primary-rgb), .8);
+  --background: rgba(var(--ion-color-tertiary-rgb), .8);
   border-radius: 25px;
 
   .ion-color.sc-ion-label-ios-h {
@@ -125,7 +126,7 @@
     background: rgba(var(--ion-color-primary-rgb), 1) !important;
     border-radius: 6px;
     padding: .15rem .3rem;
-    box-shadow: 2px 2px 0px var(--ion-color-secondary);
+    box-shadow: 2px 2px 0px var(--ion-color-tertiary);
   }
 
   ion-icon {

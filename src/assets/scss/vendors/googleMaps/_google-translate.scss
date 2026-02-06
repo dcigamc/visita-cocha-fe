@@ -1,0 +1,23 @@
+/* Oculta el combo y banner de Google */
+#google_translate_element {
+  display: none !important;
+}
+
+.goog-logo-link,
+.goog-te-gadget {
+  display: none !important;
+}
+
+.goog-te-banner-frame.skiptranslate,
+.goog-te-banner-frame {
+  display: none !important;
+}
+
+body {
+  top: 0px !important;
+}
+
+.goog-gt-tt,
+.skiptranslate {
+  display: none !important;
+}

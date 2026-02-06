@@ -5,7 +5,6 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {StateService} from 'src/app/modules/shared/services/state.service';
 import {WhereConfig} from 'src/framework/repository/api/config-list.model';
 import {ToastController} from '@ionic/angular';
-import { EventListComponent } from 'src/app/modules/shared/components/event-list/event-list.component';
 
 
 @Component({
