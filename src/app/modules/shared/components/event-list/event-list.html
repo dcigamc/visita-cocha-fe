@@ -1,86 +1,73 @@
 <section class="w-full">
-  <p-carousel *ngIf="itemList"
-              [numVisible]="4"
-              [responsiveOptions]="responsiveOptions"
-              [autoplayInterval]="5000"
-              [value]="itemList">
-    <ng-template let-item
-                 pTemplate="item">
-      <section class="w-15rem md:w-16rem flex flex-column overflow-hidden border-round-2xl shadow-2 mb-1 my-2 uch-txt--white uch-bg--{{item.color}}"
-               [ngClass]="{'cursor-pointer': item.link}">
-        <section class="w-full h-15rem md:h-16rem"
-                 (click)="openLink(item.link)">
-          <img *ngIf="item.coverUrl"
-               src="{{item.coverUrl}}"
-               alt="{{item.title}}"
-               class="w-auto h-full">
+  <p-carousel *ngIf="itemList" [numVisible]="4" [responsiveOptions]="responsiveOptions" [autoplayInterval]="5000"
+    [value]="itemList">
+    <ng-template let-item pTemplate="item">
 
-          <section *ngIf="!item.coverUrl"
-                   class="w-full h-full relative p-3">
-            <section class="opacity-90 shadow-1 text-xs w-fit uch-txt--white uch-bg--black px-2 border-round-2xl">
-              {{item.type}}
-            </section>
+      <section
+        class="w-15rem md:w-16rem flex flex-column overflow-hidden border-round-2xl shadow-2 mb-1 my-2 uch-txt--white uch-bg--{{item.color}}"
+        [ngClass]="{'cursor-pointer': item.link}"
+        [style.background-image]="item.coverUrl ? 'url(' + item.coverUrl + ')' : 'none'"
+        style="background-size: cover; background-position: center; background-repeat: no-repeat;">
 
-            <h3 class="text-xl md:text-2xl font-medium mb-0 mt-3 uch--ellipsis-2">
-              {{item.title}}
-            </h3>
+        <section class="w-full h-15rem md:h-16rem" (click)="openLink(item.link)">
 
-            <div *ngIf="item.location.place || item.location.address"
-                 class="w-full flex gap-1 align-items-start text-xs mt-2 opacity-90">
-              <i class="pi pi-map-marker text-xs"
-                 style="margin-top: 3px;">
-              </i>
+          <section class="w-full h-full relative p-3 flex flex-column justify-content-between"
+            [style.background]="item.coverUrl ? 'rgba(0,0,0,0.5)' : 'transparent'">
 
-              <span *ngIf="item.location.place"
-                    class="font-medium">
-                {{item.location.place}}
-              </span>
+            <div>
+              <section class="opacity-90 shadow-1 text-xs w-fit uch-txt--white uch-bg--black px-2 border-round-2xl">
+                {{item.type}}
+              </section>
 
-              <span *ngIf="item.location.address && !item.location.place"
-                    class="font-medium">
-                {{item.location.address}}
-              </span>
+              <h3 class="text-xl md:text-2xl font-medium mb-0 mt-3 uch--ellipsis-2"
+                style="text-shadow: 0 2px 4px rgba(0,0,0,0.5);">
+                {{item.title}}
+              </h3>
+
+              <div *ngIf="item.location.place || item.location.address"
+                class="w-full flex gap-1 align-items-start text-xs mt-2 opacity-90"
+                style="text-shadow: 0 1px 2px rgba(0,0,0,0.5);">
+                <i class="pi pi-map-marker text-xs" style="margin-top: 3px;"></i>
+                <span *ngIf="item.location.place" class="font-medium">
+                  {{item.location.place}}
+                </span>
+                <span *ngIf="item.location.address && !item.location.place" class="font-medium">
+                  {{item.location.address}}
+                </span>
+              </div>
             </div>
 
-            <section class="absolute bottom-0 right-0 left-0 mb-3 flex mx-3 gap-3 align-items-end">
+            <section class="w-full flex gap-3 align-items-end justify-content-between">
+
               <section class="flex flex-grow-1 text-xs align-items-end">
                 <section class="max-w-8rem">
-                  <div *ngIf="item.link"
-                       class="mt-2">
-                    <ion-button color="dark"
-                                size="small"
-                                class="w-fit">
+                  <div *ngIf="item.link" class="mt-2">
+                    <ion-button color="dark" size="small" class="w-fit">
                       Ver más
                     </ion-button>
                   </div>
-
-                  <p *ngIf="!item.link"
-                     class="text-sm opacity-90 p-1">
+                  <p *ngIf="!item.link" class="text-sm opacity-90 p-1 font-bold"
+                    style="text-shadow: 0 1px 2px rgba(0,0,0,0.5);">
                     <i class="pi pi-clock text-sm md:text-lg"></i><br>
-
                     Detalles próximamente
                   </p>
                 </section>
               </section>
 
-              <section class="w-5rem h-5rem shadow-1 p-3 border-round-2xl flex flex-column justify-content-center uch-txt--black uch-bg--white align-items-center">
+              <section
+                class="w-5rem h-5rem shadow-1 p-3 border-round-2xl flex flex-column justify-content-center uch-txt--black uch-bg--white align-items-center flex-shrink-0">
                 <section class="text-xl font-semibold flex align-items-end uch-txt--black">
-                    {{formatDate(item.date, 'day')}}
-                  
-                  <section class="text-sm capitalize font-normal"
-                           style="margin-bottom: 2px; margin-left: 1px;">
+                  {{formatDate(item.date, 'day')}}
+                  <section class="text-sm capitalize font-normal" style="margin-bottom: 2px; margin-left: 1px;">
                     {{formatDate(item.date, 'month')}}
                   </section>
                 </section>
-
                 <section class="text-sm flex align-items-end uch-txt--black-lighten">
                   {{formatDate(item.date, 'time')}}
-
-                  <span style="font-size: 10px; margin-left: 1px;">
-                    hrs
-                  </span>
+                  <span style="font-size: 10px; margin-left: 1px;">hrs</span>
                 </section>
               </section>
+
             </section>
           </section>
         </section>
@@ -88,8 +75,7 @@
     </ng-template>
   </p-carousel>
 
-  <section *ngIf="!itemList"
-             class="w-full h-14rem md:h-19rem border-round-2xl overflow-hidden relative">
-      <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+  <section *ngIf="!itemList" class="w-full h-14rem md:h-19rem border-round-2xl overflow-hidden relative">
+    <ion-skeleton-text [animated]="true"></ion-skeleton-text>
   </section>
 </section>

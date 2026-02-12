@@ -22,7 +22,10 @@ export class MainToolbarComponent implements OnInit {
   public backState: boolean;
   public languages = [
     { name: 'Español', code: 'es' },
-    { name: 'English', code: 'en' }
+    { name: 'Inglés', code: 'en' },
+    { name: 'Francés', code: 'fr' },
+    { name: 'Italiano', code: 'it' },
+    { name: 'Portugués', code: 'pt' }
   ];
 
   public language: any = 'es';
@@ -83,53 +86,66 @@ export class MainToolbarComponent implements OnInit {
   }
 
   setLang(lang: any) {
+    const value = lang?.detail?.value;
     const activeLang = localStorage.getItem('lang_active');
-    if (this._isChangingLang || lang?.detail?.value === activeLang) {
+
+    if (this._isChangingLang || value === activeLang) return;
+
+    this._isChangingLang = true;
+    this.language = value;
+
+    if (value === 'es') {
+      localStorage.setItem('lang', 'es');
+      localStorage.setItem('lang_active', 'es');
+      this.resetToOriginalLanguage();
       return;
     }
 
-    this._isChangingLang = true;
-    this.language = lang?.detail?.value;
-    localStorage.setItem('lang', this.language);
-    localStorage.setItem('lang_active', this.language);
+    localStorage.setItem('lang', value);
+    localStorage.setItem('lang_active', value);
 
-    if (this.language === 'es') {
-      this.resetToOriginalLanguage();
-    } else {
-      this.applyLang(this.language);
-    }
+    this.applyLang(value);
 
     setTimeout(() => {
       this._isChangingLang = false;
-    }, 1500);
+    }, 1200);
   }
 
   applyLang(lang: string, attempts = 0) {
-    if (attempts > 5) return;
+    if (attempts >= 5) return;
 
-    const select = document.querySelector(
-      '.goog-te-combo'
-    ) as HTMLSelectElement;
+    const select = document.querySelector('.goog-te-combo') as HTMLSelectElement;
 
-    if (!select || select.value === lang) {
-      setTimeout(() => this.applyLang(lang, attempts + 1), 500);
+    if (!select) {
+      setTimeout(() => this.applyLang(lang, attempts + 1), 400);
       return;
     }
+
+    if (select.value === lang) return;
 
     select.value = lang;
     select.dispatchEvent(new Event('change'));
   }
 
   resetToOriginalLanguage() {
+    // path raíz
     document.cookie =
       'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
 
+    // localhost
     document.cookie =
-      'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=' +
-      window.location.hostname +
-      ';';
+      'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=localhost;';
+
+    // subdominio prod
+    document.cookie =
+      'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=visita.cochabamba.bo;';
+
+    // dominio raíz prod
+    document.cookie =
+      'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.cochabamba.bo;';
 
     localStorage.setItem('lang', 'es');
+    localStorage.removeItem('lang_active');
 
     location.reload();
   }
